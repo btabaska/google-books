@@ -10,6 +10,14 @@ const BookSchema = new Schema({
     type: Array,
     required: false,
   },
+  publisher: {
+    type: String,
+    required: false,
+  },
+  publishedDate: {
+    type: String,
+    required: false,
+  },
   description: {
     type: String,
     required: false,

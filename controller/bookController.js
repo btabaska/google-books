@@ -1,6 +1,6 @@
 const db = require("../models");
 const fetch = require("node-fetch");
-const API_KEY = "AIzaSyAj3hAx2wai9Q1eqtWYz3O9Qsc0mUEpL8g";
+const axios = require("axios");
 
 module.exports = {
   findAll: function (req, res) {
@@ -12,10 +12,8 @@ module.exports = {
   },
   createOne: function (req, res) {
     db.Book.create(req.body)
-      .then((dbUser) => {
-        // If we were able to successfully create a User, send it back to the client
-        res.json(dbUser);
-        console.log("saved:" + dbUser);
+      .then((data) => {
+        console.log(req.body.title + " Inserted.");
       })
       .catch((err) => {
         // If an error occurred, send it to the client
@@ -23,7 +21,7 @@ module.exports = {
       });
   },
   deleteOne: function (req, res) {
-    db.Book.deleteOne({ _id: req.params.id })
+    db.Book.deleteOne({ _id: req.body._id })
       .then((dbLogEvent) => {
         console.log("event deleted"), res.json(dbLogEvent);
       })
@@ -39,13 +37,13 @@ module.exports = {
         res.json(err);
       });
   },
-  searchOne: function (req, res) {
-    console.log(req.body.searchParam);
-    fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${req.body.searchParam}&key=${API_KEY}`
-    )
-      .then((searchResult) => searchResult.json())
-      .then((res) => console.log(res))
+  searchOne: async function (req, res) {
+    var data = await axios
+      .get(
+        `https://www.googleapis.com/books/v1/volumes?q=${req.query.searchParam}&key=${process.env.API_KEY}`
+      )
+      .then((searchResult) => res.json(searchResult.data))
       .catch((err) => console.log(err));
+    return data;
   },
 };
