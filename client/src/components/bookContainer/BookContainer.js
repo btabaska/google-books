@@ -65,7 +65,7 @@ export default function BookContainer({ props, mode }) {
             <Paper className={classes.paper}>
               {props.image ? (
                 <img src={props.image} alt="book cover " />
-              ) : props.thumbnail ? (
+              ) : props.imageLinks.thumbnail ? (
                 <img src={props.imageLinks.thumbnail} alt="book cover " />
               ) : (
                 void [0]
